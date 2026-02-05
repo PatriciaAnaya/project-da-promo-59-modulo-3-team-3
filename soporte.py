@@ -12,12 +12,31 @@ def extraer_datos(ruta_archivo):
         return None
 
 def transformar_datos(df):
+    import re
     df_limpio = df.drop_duplicates().copy()
     df_limpio = df_limpio.dropna(subset=['MonthlyIncome', 'Gender'])
    
     bins = [0, 5, 10, 15, 20, 100]
     labels = ['0-5 años', '6-10 años', '11-15 años', '16-20 años', 'Más de 20 años']
     df_limpio['TenureGroup'] = pd.cut(df_limpio['YearsAtCompany'], bins=bins, labels=labels, right=False)
+    
+    def limpiar_nombre(nombre):
+        # Insertar espacio antes de mayúsculas (para separar PascalCase)
+        nombre = re.sub(r'(?<!^)(?=[A-Z])', ' ', nombre)
+        # Limpiar guiones bajos previos, pasar a minúsculas y quitar espacios extra
+        return nombre.replace('_', ' ').lower().strip().replace(' ', '_')
+
+    df_limpio.columns = [limpiar_nombre(col) for col in df_limpio.columns]
+
+    # 2. Limpiar el CONTENIDO de las filas (solo columnas de texto)
+    cols_texto = df_limpio.select_dtypes(include=['object']).columns
+    
+    for col in cols_texto:
+        df_limpio[col] = (df_limpio[col]
+                   .str.replace("_", " ", regex=False)
+                   .str.title()
+                   .str.strip())
+    
    
     print("✅ Transformación: Limpieza completada.")
     return df_limpio
