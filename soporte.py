@@ -36,8 +36,7 @@ def transformar_datos(df):
                    .str.replace("_", " ", regex=False)
                    .str.title()
                    .str.strip())
-    
-   
+       
     print("✅ Transformación: Limpieza completada.")
     return df_limpio
 
