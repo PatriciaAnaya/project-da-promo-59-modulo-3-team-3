@@ -45,11 +45,11 @@ def crear_base_de_datos(nombre_db):
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Empleados_Analisis (
-            Gender TEXT, JobLevel INTEGER, MonthlyIncome REAL,
-            PercentSalaryHike REAL, YearsAtCompany INTEGER,
-            TenureGroup TEXT, WorkLifeBalance INTEGER,
-            TrainingTimesLastYear INTEGER, DistanceFromHome INTEGER,
-            BusinessTravel TEXT
+            gender TEXT, job_level INTEGER, monthly_income REAL,
+            percent_salary_hike REAL, years_at_company INTEGER,
+            tenure_group TEXT, work_life_balance INTEGER,
+            training_times_last_year INTEGER, distance_from_home INTEGER,
+            business_travel TEXT
         )
     ''')
     conn.commit()
